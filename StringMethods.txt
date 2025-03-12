@@ -1,0 +1,137 @@
+Here’s a breakdown of all JavaScript string methods with **examples**:  
+
+---
+
+## 📌 **String Creation Methods**  
+```js
+let str1 = String(123);  // "123"
+let str2 = new String("Hello");  // String object (not recommended)
+console.log(str1, typeof str1);  // "123" string
+console.log(str2, typeof str2);  // "Hello" object
+```
+
+---
+
+## 📌 **String Length & Access**  
+```js
+let str = "Hello";
+console.log(str.length);  // 5
+console.log(str.charAt(1));  // "e"
+console.log(str.charCodeAt(1));  // 101 (Unicode of 'e')
+console.log(str.codePointAt(1));  // 101
+console.log(str[1]);  // "e" (Bracket notation)
+```
+
+---
+
+## 📌 **String Searching Methods**  
+```js
+let text = "Hello, JavaScript is amazing!";
+console.log(text.indexOf("JavaScript"));  // 7
+console.log(text.lastIndexOf("is"));  // 17
+console.log(text.includes("amazing"));  // true
+console.log(text.startsWith("Hello"));  // true
+console.log(text.endsWith("!"));  // true
+console.log(text.search(/java/i));  // 7 (Case insensitive search using regex)
+```
+
+---
+
+## 📌 **String Modification Methods**  
+```js
+let str2 = "  JavaScript  ";
+console.log(str2.trim());  // "JavaScript"
+console.log(str2.trimStart());  // "JavaScript  "
+console.log(str2.trimEnd());  // "  JavaScript"
+
+let str3 = "Hi";
+console.log(str3.padStart(5, "*"));  // "***Hi"
+console.log(str3.padEnd(5, "!"));  // "Hi!!!"
+
+console.log("Repeat ".repeat(3));  // "Repeat Repeat Repeat "
+```
+
+---
+
+## 📌 **String Case Conversion Methods**  
+```js
+let msg = "Hello World";
+console.log(msg.toUpperCase());  // "HELLO WORLD"
+console.log(msg.toLowerCase());  // "hello world"
+console.log(msg.toLocaleUpperCase());  // "HELLO WORLD" (locale-specific)
+console.log(msg.toLocaleLowerCase());  // "hello world"
+```
+
+---
+
+## 📌 **String Extraction Methods**  
+```js
+let text2 = "JavaScript";
+console.log(text2.slice(0, 4));  // "Java"
+console.log(text2.slice(-6));  // "Script"
+console.log(text2.substring(0, 4));  // "Java"
+console.log(text2.substr(4, 6));  // "Script" (deprecated)
+```
+
+---
+
+## 📌 **String Replacement Methods**  
+```js
+let text3 = "JavaScript is fun. JavaScript is powerful!";
+console.log(text3.replace("JavaScript", "JS"));  // "JS is fun. JavaScript is powerful!"
+console.log(text3.replaceAll("JavaScript", "JS"));  // "JS is fun. JS is powerful!"
+```
+
+---
+
+## 📌 **String Splitting & Joining Methods**  
+```js
+let words = "apple,banana,orange";
+let arr = words.split(",");
+console.log(arr);  // ["apple", "banana", "orange"]
+
+let joined = arr.join(" - ");
+console.log(joined);  // "apple - banana - orange"
+```
+
+---
+
+## 📌 **String Conversion Methods**  
+```js
+let num = 123;
+console.log(num.toString());  // "123"
+console.log(new String("Hello").valueOf());  // "Hello"
+console.log("\u1E9B\u0323".normalize("NFC"));  // Unicode normalization
+```
+
+---
+
+## 📌 **String Encoding & Decoding Methods**  
+```js
+let url = "https://example.com?name=John Doe";
+let encoded = encodeURIComponent(url);
+console.log(encoded);  // "https%3A%2F%2Fexample.com%3Fname%3DJohn%20Doe"
+
+let decoded = decodeURIComponent(encoded);
+console.log(decoded);  // "https://example.com?name=John Doe"
+```
+
+---
+
+## 📌 **Tagged Template Literals (ES6)**  
+```js
+let name = "John";
+console.log(String.raw`Hello\n${name}!`);  // "Hello\nJohn!" (Raw string, no escape)
+```
+
+---
+
+### ✅ **Summary:**  
+- **Searching:** `indexOf()`, `lastIndexOf()`, `includes()`, `startsWith()`, `endsWith()`, `search()`, `match()`, `matchAll()`  
+- **Modification:** `trim()`, `trimStart()`, `trimEnd()`, `padStart()`, `padEnd()`, `repeat()`  
+- **Case Conversion:** `toUpperCase()`, `toLowerCase()`  
+- **Extraction:** `slice()`, `substring()`, `substr()`  
+- **Replacement:** `replace()`, `replaceAll()`  
+- **Splitting & Joining:** `split()`, `join()`  
+- **Conversion & Encoding:** `toString()`, `valueOf()`, `encodeURI()`, `decodeURI()`, `normalize()`  
+
