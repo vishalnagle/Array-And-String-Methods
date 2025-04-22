@@ -1,0 +1,269 @@
+### CSS Interview Topics for Experienced Developers
+
+---
+
+#### 1. **CSS Architecture & Methodologies**
+
+**BEM (Block Element Modifier)**
+```css
+/* Block: card */
+.card {}
+/* Element: card__title */
+.card__title {}
+/* Modifier: card--highlighted */
+.card--highlighted {}
+```
+- Helps create reusable, maintainable code.
+
+**CSS-in-JS**
+- Example in React using styled-components:
+```jsx
+const Button = styled.button`
+  background: blue;
+  color: white;
+`;
+```
+- Allows dynamic styling with JS logic.
+
+---
+
+#### 2. **Positioning & Layouts**
+
+**Flexbox**
+```css
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+```
+
+**Grid**
+```css
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+```
+- Grid is best for 2D layouts; Flexbox for 1D.
+
+**Position**
+```css
+.element {
+  position: absolute;
+  top: 10px;
+  left: 20px;
+}
+```
+
+---
+
+#### 3. **Responsive Design**
+
+**Media Queries**
+```css
+@media (max-width: 600px) {
+  .container {
+    flex-direction: column;
+  }
+}
+```
+
+**Responsive Units**
+```css
+.container {
+  width: 80vw;
+  font-size: 2rem;
+}
+```
+
+---
+
+#### 4. **Animations & Transitions**
+
+**Transition**
+```css
+.button {
+  transition: background 0.3s ease;
+}
+.button:hover {
+  background: red;
+}
+```
+
+**Keyframes Animation**
+```css
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.element {
+  animation: fadeIn 2s ease-in;
+}
+```
+
+---
+
+#### 5. **Specificity, Inheritance & Cascade**
+
+- Inline > ID > Class > Element
+```css
+/* Low specificity */
+div p {}
+/* Higher specificity */
+#header .menu-item {}
+```
+- Avoid `!important` unless necessary.
+
+---
+
+#### 6. **Advanced Selectors**
+
+```css
+/* Pseudo-classes */
+li:nth-child(odd) {}
+a:hover {}
+
+/* Pseudo-elements */
+p::first-line {}
+
+/* Attribute selectors */
+input[type="text"] {}
+```
+
+---
+
+#### 7. **CSS Variables**
+
+```css
+:root {
+  --main-color: #3498db;
+}
+.button {
+  background: var(--main-color);
+}
+```
+
+---
+
+#### 8. **Performance Optimization**
+
+- Use shorthand and combine selectors
+- Minify and bundle CSS
+- Use `contain` to limit reflows
+```css
+.card {
+  contain: layout style;
+}
+```
+
+---
+
+#### 9. **Cross-Browser Compatibility**
+
+- Use Autoprefixer
+- Test in multiple browsers
+```css
+.element {
+  display: -webkit-flex;
+  display: flex;
+}
+```
+
+---
+
+#### 10. **Modern CSS Features**
+
+**Container Queries**
+```css
+@container (min-width: 600px) {
+  .card {
+    padding: 2rem;
+  }
+}
+```
+
+**Logical Properties**
+```css
+.card {
+  margin-inline: auto;
+  padding-block: 1rem;
+}
+```
+
+---
+
+#### 11. **Accessibility in CSS**
+
+**Focus Style**
+```css
+button:focus {
+  outline: 2px solid blue;
+}
+```
+
+**Reduced Motion**
+```css
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none;
+  }
+}
+```
+
+---
+
+#### 12. **Preprocessors & Tools**
+
+**SASS Example**
+```scss
+$main-color: #333;
+.button {
+  color: $main-color;
+}
+```
+
+**Tailwind CSS**
+```html
+<button class="bg-blue-500 text-white p-2 rounded">Click</button>
+```
+
+---
+
+#### 13. **Debugging & Dev Tools**
+
+- Use Chrome DevTools to inspect layout
+- Check Computed tab for specificity issues
+- Use box model inspector to debug spacing
+
+---
+
+#### 14. **Theming and Dark Mode**
+
+```css
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #121212;
+    color: white;
+  }
+}
+```
+
+---
+
+#### 15. **Real-world Challenges**
+
+**CSS-only Toggle**
+```html
+<input type="checkbox" id="toggle">
+<label for="toggle">Toggle</label>
+<div class="menu">Menu</div>
+```
+```css
+#toggle:checked + .menu {
+  display: block;
+}
+```
+
+---
+
