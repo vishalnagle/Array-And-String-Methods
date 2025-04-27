@@ -1,0 +1,358 @@
+Got it! Let’s go through **each Jest topic** you listed **in detail with examples**.  
+I'll explain clearly so it's easy to understand, even if you're new to Jest.
+
+---
+
+## 🛠 Introduction to Jest
+
+### What is Jest?
+- **Jest** is a JavaScript **testing framework** developed by **Meta** (Facebook).
+- It's mainly used for **unit testing** in applications built with **React**, **Node.js**, etc.
+
+**Key features:**
+- Fast and easy to set up
+- Built-in mocking
+- Snapshot testing
+- Code coverage
+
+---
+
+### Why use Jest?
+- **Simple configuration** (you can start testing quickly)
+- **Fast parallel test running** (runs tests in parallel to speed up)
+- **Good error messages** (clear and helpful)
+- Works great with **React** and **Node.js**
+
+---
+
+## 🛠 Installation and Setup
+
+### Installing Jest
+```bash
+npm install --save-dev jest
+```
+- **--save-dev** means it will install Jest only for development, not for production.
+
+---
+
+### Basic Configuration
+In your `package.json`, add a script:
+
+```json
+{
+  "scripts": {
+    "test": "jest"
+  }
+}
+```
+Now you can run all your tests using:
+```bash
+npm test
+```
+
+---
+
+## 🛠 Test Structure
+
+### Writing your first test
+
+Basic structure:
+```javascript
+test('adds 1 + 2 to equal 3', () => {
+  expect(1 + 2).toBe(3);
+});
+```
+or using `it()` (alias of `test()`):
+```javascript
+it('subtracts 5 - 2 to equal 3', () => {
+  expect(5 - 2).toBe(3);
+});
+```
+
+---
+
+### Grouping tests with `describe()`
+
+```javascript
+describe('Math operations', () => {
+  test('addition', () => {
+    expect(2 + 2).toBe(4);
+  });
+
+  test('subtraction', () => {
+    expect(5 - 3).toBe(2);
+  });
+});
+```
+- `describe()` helps group related tests together.
+
+---
+
+## 🛠 Matchers (Assertions)
+
+Matchers are **functions** that compare values inside `expect()`.
+
+---
+
+### `.toBe()`
+
+**Exact match** (like `===`)
+```javascript
+expect(2 + 2).toBe(4);
+```
+
+---
+
+### `.not.toBe()`
+
+**Negate** a matcher:
+```javascript
+expect(2 + 2).not.toBe(5);
+```
+
+---
+
+### `.toEqual()`
+
+**Deep equality** (for objects or arrays):
+```javascript
+expect({ name: 'Alice' }).toEqual({ name: 'Alice' });
+```
+
+---
+
+### `.toBeNull()`, `.toBeUndefined()`, `.toBeTruthy()`, `.toBeFalsy()`
+
+Checking specific types:
+
+```javascript
+expect(null).toBeNull();
+expect(undefined).toBeUndefined();
+expect(true).toBeTruthy();
+expect(false).toBeFalsy();
+```
+
+---
+
+### `.toContain()`
+
+Check if **array or string contains** an item:
+
+```javascript
+expect(['apple', 'banana', 'cherry']).toContain('banana');
+expect('teamwork').toContain('team');
+```
+
+---
+
+### `.toHaveLength()`
+
+Check **length**:
+
+```javascript
+expect([1, 2, 3]).toHaveLength(3);
+expect('hello').toHaveLength(5);
+```
+
+---
+
+### `.toMatch()`
+
+**Match string** with regex or substring:
+
+```javascript
+expect('OpenAI').toMatch(/open/i); // case insensitive
+expect('hello world').toMatch('hello');
+```
+
+---
+
+## 🛠 Testing Functions
+
+### Testing pure functions
+
+Example function:
+```javascript
+function add(a, b) {
+  return a + b;
+}
+```
+Test:
+```javascript
+test('adds two numbers', () => {
+  expect(add(2, 3)).toBe(5);
+});
+```
+✅ Input → Output testing.
+
+---
+
+## 🛠 Setup and Teardown
+
+You sometimes need to set up **before** or clean up **after** tests.
+
+---
+
+### `beforeEach()`, `afterEach()`
+
+- Runs **before or after each** test.
+
+```javascript
+let count = 0;
+
+beforeEach(() => {
+  count = 0;
+});
+
+test('first test', () => {
+  count += 1;
+  expect(count).toBe(1);
+});
+
+test('second test', () => {
+  count += 1;
+  expect(count).toBe(1);
+});
+```
+
+---
+
+### `beforeAll()`, `afterAll()`
+
+- Runs **once before all tests start** and **once after all tests finish**.
+
+```javascript
+let db;
+
+beforeAll(() => {
+  db = 'Database Connected';
+});
+
+afterAll(() => {
+  db = null;
+});
+
+test('uses the db', () => {
+  expect(db).toBe('Database Connected');
+});
+```
+
+---
+
+## 🛠 Mock Functions (`jest.fn()`)
+
+Mocks are fake functions to **test behavior**.
+
+---
+
+### Create and use a mock function
+```javascript
+const mockFunction = jest.fn();
+
+mockFunction('arg1', 'arg2');
+
+expect(mockFunction).toHaveBeenCalled();
+expect(mockFunction).toHaveBeenCalledWith('arg1', 'arg2');
+```
+
+---
+
+### Checking calls
+- `.toHaveBeenCalled()` → Check if the mock was called
+- `.toHaveBeenCalledWith(args)` → Check if called with specific arguments
+
+---
+
+## 🛠 Testing Asynchronous Code
+
+---
+
+### Testing Promises
+
+Using `.resolves` and `.rejects`:
+
+```javascript
+const fetchData = () => Promise.resolve('peanut butter');
+
+test('fetches data', () => {
+  return expect(fetchData()).resolves.toBe('peanut butter');
+});
+```
+
+```javascript
+const fetchError = () => Promise.reject('error');
+
+test('handles error', () => {
+  return expect(fetchError()).rejects.toBe('error');
+});
+```
+
+---
+
+### Using `async/await`
+
+Cleaner async tests:
+
+```javascript
+test('fetches data async', async () => {
+  const data = await fetchData();
+  expect(data).toBe('peanut butter');
+});
+```
+
+---
+
+### Using `done` callback (older style)
+
+```javascript
+test('fetches data with done', (done) => {
+  fetchData().then((data) => {
+    expect(data).toBe('peanut butter');
+    done();
+  });
+});
+```
+> You call `done()` after the async task is finished.
+
+---
+
+## 🛠 Snapshot Testing
+
+---
+
+### What are snapshots?
+
+Snapshots are like **screenshots** of your JavaScript output.  
+Jest saves the output and compares it in the future runs.
+
+---
+
+### `expect(tree).toMatchSnapshot()`
+
+Example:
+```javascript
+test('snapshot test', () => {
+  const tree = { name: 'Alice', age: 25 };
+  expect(tree).toMatchSnapshot();
+});
+```
+First time it saves the snapshot.  
+Later runs compare new output with saved snapshot.
+
+---
+
+### Updating snapshots
+
+If your output **legitimately changed**, update snapshots:
+
+```bash
+npm test -- -u
+```
+
+Or:
+
+```bash
+jest -u
+```
+
+---

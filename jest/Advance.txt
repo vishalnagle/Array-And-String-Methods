@@ -1,0 +1,447 @@
+Awesome! You gave a **perfect roadmap** of **advanced Jest topics**.  
+I'll now **explain them one by one in detail**, with **simple examples**, so you can **master Jest** easily.
+
+---
+
+# 📚 Advanced Jest Topics Explained
+
+---
+
+## 🧩 Advanced Mocking
+
+### Mocking Modules (`jest.mock()`)
+
+`jest.mock()` **automatically mocks** a module. It replaces all functions with **mock functions**.
+
+**Example**:
+```javascript
+// utils.js
+export const add = (a, b) => a + b;
+
+// utils.test.js
+import { add } from './utils';
+
+jest.mock('./utils'); // mocks all exports
+
+test('mock add', () => {
+  add.mockReturnValue(10); // we control the output
+  expect(add(2, 3)).toBe(10);
+});
+```
+
+---
+
+### Manual Mocks (in `__mocks__` folder)
+
+You can create manual mocks inside a special `__mocks__` folder.
+
+**Example**:
+```javascript
+// axios.js
+export const get = (url) => { /* real implementation */ }
+
+// __mocks__/axios.js
+export const get = jest.fn(() => Promise.resolve({ data: 'Mocked Data' }));
+
+// test.js
+import axios from 'axios';
+jest.mock('axios');
+
+test('mock axios', async () => {
+  const response = await axios.get('/api');
+  expect(response.data).toBe('Mocked Data');
+});
+```
+
+---
+
+### Mocking axios, fetch, or external libraries
+
+**axios** example (already shown above).  
+**fetch** example:
+
+```javascript
+global.fetch = jest.fn(() =>
+  Promise.resolve({ json: () => Promise.resolve({ message: 'Hello' }) })
+);
+
+test('mock fetch', async () => {
+  const res = await fetch('/api');
+  const data = await res.json();
+  expect(data.message).toBe('Hello');
+});
+```
+
+---
+
+## 🎛️ Mock Implementation and Return Values
+
+### `mockImplementation()`
+
+Sets a **custom behavior**.
+
+```javascript
+const mockFn = jest.fn().mockImplementation((a, b) => a * b);
+
+test('mockImplementation', () => {
+  expect(mockFn(2, 3)).toBe(6);
+});
+```
+
+---
+
+### `mockReturnValue()`
+
+Returns a **fixed value** every time.
+
+```javascript
+const mockFn = jest.fn().mockReturnValue('fixed');
+
+test('mockReturnValue', () => {
+  expect(mockFn()).toBe('fixed');
+});
+```
+
+---
+
+### `mockResolvedValue()` and `mockRejectedValue()`
+
+Use for **Promise** based mocks.
+
+```javascript
+const mockFn = jest.fn().mockResolvedValue('Success');
+
+test('mockResolvedValue', async () => {
+  await expect(mockFn()).resolves.toBe('Success');
+});
+
+const errorFn = jest.fn().mockRejectedValue('Error');
+
+test('mockRejectedValue', async () => {
+  await expect(errorFn()).rejects.toBe('Error');
+});
+```
+
+---
+
+## ⚛️ Testing React Components (React Testing Library + Jest)
+
+First install:
+```bash
+npm install @testing-library/react @testing-library/jest-dom
+```
+
+---
+
+### Rendering Components
+
+```javascript
+import { render } from '@testing-library/react';
+import App from './App';
+
+test('renders App', () => {
+  render(<App />);
+});
+```
+
+---
+
+### Querying Elements (getByText, findByRole, etc.)
+
+```javascript
+import { render, screen } from '@testing-library/react';
+import App from './App';
+
+test('find heading', () => {
+  render(<App />);
+  const heading = screen.getByText(/welcome/i);
+  expect(heading).toBeInTheDocument();
+});
+```
+
+---
+
+### Simulating User Events
+
+```javascript
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+
+test('click button', async () => {
+  render(<button>Click Me</button>);
+  const button = screen.getByText('Click Me');
+  await userEvent.click(button);
+});
+```
+
+---
+
+### Testing Forms, Buttons, and User Flows
+
+```javascript
+test('fill form and submit', async () => {
+  render(<form><input placeholder="Name" /><button>Submit</button></form>);
+  await userEvent.type(screen.getByPlaceholderText('Name'), 'John');
+  await userEvent.click(screen.getByText('Submit'));
+});
+```
+
+---
+
+## 📊 Code Coverage
+
+### Generating Coverage Reports
+
+Run:
+```bash
+jest --coverage
+```
+It generates `coverage/` folder showing how much code you tested.
+
+---
+
+### Understanding Coverage Thresholds
+
+Set required coverage in `jest.config.js`:
+
+```javascript
+coverageThreshold: {
+  global: {
+    branches: 80,
+    functions: 80,
+    lines: 80,
+    statements: 80,
+  },
+},
+```
+
+---
+
+## 🧪 Custom Matchers
+
+### Adding Custom Jest Matchers (like `jest-extended`)
+
+Install:
+```bash
+npm install jest-extended
+```
+Then add in `setupFilesAfterEnv`:
+
+```javascript
+import 'jest-extended';
+
+test('string match', () => {
+  expect('Hello').toStartWith('He');
+});
+```
+
+---
+
+## 🧵 Parameterized Tests
+
+### Using `test.each()` 
+
+Run same test with different inputs.
+
+```javascript
+test.each([
+  [1, 1, 2],
+  [2, 3, 5],
+  [4, 5, 9]
+])('adds %i + %i to equal %i', (a, b, expected) => {
+  expect(a + b).toBe(expected);
+});
+```
+
+---
+
+## ⏰ Timers and Intervals
+
+### Mocking Timers
+
+```javascript
+jest.useFakeTimers();
+setTimeout(() => console.log('called'), 1000);
+jest.runAllTimers();
+```
+
+---
+
+### Controlling `setTimeout`, `setInterval`
+
+You can fast-forward time:
+```javascript
+jest.advanceTimersByTime(1000);
+```
+
+---
+
+## ⚡ Testing Error Handling
+
+### Verifying Thrown Errors
+
+```javascript
+function throwError() {
+  throw new Error('Wrong!');
+}
+
+test('throws error', () => {
+  expect(throwError).toThrow('Wrong!');
+});
+```
+
+---
+
+## 🎯 Running Specific Tests
+
+### `test.only()`, `test.skip()`
+
+Run or skip specific tests:
+
+```javascript
+test.only('only this will run', () => {});
+
+test.skip('this will be skipped', () => {});
+```
+
+Same for `describe.only()` and `describe.skip()`!
+
+---
+
+## 📦 Testing Context and Scoping
+
+### Isolating Tests
+
+Reset mocks between tests:
+```javascript
+afterEach(() => {
+  jest.clearAllMocks();
+});
+```
+
+Or:
+```javascript
+jest.resetAllMocks();
+```
+
+---
+
+## 🛠️ Configuration Customization
+
+### `jest.config.js`
+
+Example basic config:
+```javascript
+module.exports = {
+  testEnvironment: 'jsdom',
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+};
+```
+
+---
+
+### Using setup files (`setupFilesAfterEnv`)
+
+Setup global things:
+
+```javascript
+// jest.setup.js
+import '@testing-library/jest-dom';
+```
+
+---
+
+### Running Tests in Watch Mode
+
+```bash
+jest --watch
+```
+Watches files and re-runs tests on save!
+
+---
+
+## 🏢 Testing Monorepos or Large Projects
+
+### Using `projects` Field
+
+In `jest.config.js`:
+
+```javascript
+projects: ['<rootDir>/packages/packageA', '<rootDir>/packages/packageB'],
+```
+Each package has its own `jest.config.js`.
+
+---
+
+### Running Tests in Different Packages
+
+```bash
+jest packages/packageA
+```
+
+---
+
+## 🕰️ Mocking Date and Time
+
+### `jest.setSystemTime()`
+
+```javascript
+jest.useFakeTimers();
+jest.setSystemTime(new Date('2020-01-01'));
+
+test('mock date', () => {
+  expect(new Date().toISOString()).toBe('2020-01-01T00:00:00.000Z');
+});
+```
+
+---
+
+## ⚙️ Integrating with CI/CD
+
+Run Jest in CI easily:
+
+**GitHub Actions Example**:
+
+```yaml
+- name: Run Tests
+  run: npm run test
+```
+
+---
+
+## 🐛 Debugging Jest Tests
+
+### Using `--runInBand` 
+
+Run tests **serially** (one by one):
+```bash
+jest --runInBand
+```
+Useful for debugging.
+
+---
+
+### Using `debugger` inside tests
+
+```javascript
+test('debug', () => {
+  const value = 5;
+  debugger; // stop here
+  expect(value).toBe(5);
+});
+```
+Then run using Chrome DevTools or VSCode debugger.
+
+---
+
+# 🎯 Summary
+
+| Topic | Key |
+| :-- | :-- |
+| Mocks | `jest.mock()`, `mockImplementation()`, manual mocks |
+| Components | React Testing Library for render, click, form |
+| Coverage | `--coverage`, thresholds |
+| Customization | `jest.config.js`, setup files |
+| Advanced | `test.each()`, fake timers, debug |
+
+---
